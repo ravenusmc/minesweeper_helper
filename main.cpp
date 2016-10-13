@@ -82,6 +82,7 @@ int main(){
         //Calling the function to build each of the 2D arrays
         buildArray(inputFile, mines, ROWS, n, m);
         
+        //This line is simply to display the field for each array in the txt document.
         outputFile << "Field #" << count << endl;
         
         //This function will build the new arrays.
@@ -124,8 +125,61 @@ void buildArray(ifstream &file, char values[][COLS], int rows, int n, int m){
     }
 } // End of buildArray Function
 
-//This function will build each array and then print it to the outputdata.txt document.
+
 void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows, int n, int m){
+    
+    //Creating an array to hold the numbers for the mines. Each position
+    //Will be set to 0 at the start.
+    int mineSpots[n][m];
+    for (int r = 0; r < n; r++){
+        for (int c = 0; c < m; c++){
+            mineSpots[r][c] = 0;
+        }
+    }
+    
+    for (int row = 0; row < n + 1; row++) {
+        for (int col = 0; col < m + 1; col++) {
+            if (values[row][col] == '*') {
+                mineSpots[row - 1][col - 1]++;
+                mineSpots[row - 1][col]++;
+                mineSpots[row - 1][col + 1]++;
+                mineSpots[row][col - 1]++;
+                mineSpots[row][col + 1]++;
+                mineSpots[row + 1][col - 1]++;
+                mineSpots[row + 1][col]++;
+                mineSpots[row + 1][col + 1]++;
+            }
+        }
+    }
+    
+//    for (int row = 0; row < n + 1; row++) {
+//        for (int col = 0; col < m + 1; col++) {
+//            if (values[row - 1][col] == -1) {
+//                mineSpots[row - 1][col]++;
+//            }
+//            if (values[row - 1][col - 1] != -1){
+//                mineSpots[row-1][col-1]++;
+//            }
+//            if (values[row - 1][col + 1] != -1){
+//                mineSpots[row-1][col+1]++;
+//            }
+//            if (values[row][col - 1] != -1) {
+//                mineSpots[row][col - 1]++;
+//            }
+//            if (values[row + 1][col] != -1) {
+//                mineSpots[row + 1][col]++;
+//            }
+//            if (values[row + 1][col + 1] != -1) {
+//               mineSpots[row + 1][col + 1]++;
+//            }
+//            if (values[row+1][col-1] != -1) {
+//                mineSpots[row+1][col-1]++;
+//            }
+//            if (values[row][col+1] != -1) {
+//                mineSpots[row][col+1]++;
+//            }
+//        }
+//    }
     
     //This for loop displays the array.
     for (int r = 0; r < n; r++){
@@ -133,43 +187,61 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
             if (values[r][c] == '*'){
                 outFile << '*';
                 cout << '*';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c - 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c] == '*')){
-                outFile<< '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c + 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c - 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c + 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c - 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 1][c + 1] == '*')){
-                outFile << '1';
-                cout << '1';
-            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*') && (values[r - 1][c - 1] == '*')){
-                outFile << '2';
-                cout << '2';
-            }else if(values[r][c] == '.'){
-                outFile << '0';
-                cout << '0';
+            }else{
+                outFile << mineSpots[r][c];
+                cout << mineSpots[r][c];
+                }
             }
-        }
-        cout << endl;
-        outFile << endl;
+            cout << endl;
+            outFile << endl;
     }
-}// End of showArray Function
 
+
+
+    
+    //This for loop displays the array in the outputdata file. It will also place the correct number of mines
+    //at each location that is near a mine.
+//    for (int r = 0; r < n; r++){
+//        for (int c = 0; c < m; c++){
+//            if (values[r][c] == '*'){
+//                outFile << '*';
+//                cout << '*';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c - 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c] == '*')){
+//                outFile<< '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c + 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c - 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c + 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c - 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 1][c + 1] == '*')){
+//                outFile << '1';
+//                cout << '1';
+//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*') && (values[r - 1][c - 1] == '*')){
+//                outFile << '2';
+//                cout << '2';
+//            }else if(values[r][c] == '.'){
+//                outFile << '0';
+//                cout << '0';
+//            }
+//        }
+//        cout << endl;
+//        outFile << endl;
+//    }
+}// End of showArray Function
 
 
 
