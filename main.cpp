@@ -50,7 +50,8 @@ int main(){
     int count = 1;
     
     //Opening the file
-    inputFile.open("inputdata.txt");
+    inputFile.open("test.txt");
+    //inputdata
     
     //Opening/creating the file to which store the information in this program.
     outputFile.open("outputdata.txt");
@@ -137,49 +138,35 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
         }
     }
     
-    for (int row = 0; row < n + 1; row++) {
-        for (int col = 0; col < m + 1; col++) {
+    for (int row = 0; row < n; row++) {
+        for (int col = 0; col < m; col++) {
             if (values[row][col] == '*') {
-                mineSpots[row - 1][col - 1]++;
-                mineSpots[row - 1][col]++;
-                mineSpots[row - 1][col + 1]++;
-                mineSpots[row][col - 1]++;
-                mineSpots[row][col + 1]++;
-                mineSpots[row + 1][col - 1]++;
+                if ((row - 1 >= 0) && (col - 1 >= 0) ){
+                    mineSpots[row - 1][col - 1]++;
+                }
+                if (row - 1 >= 0){
+                    mineSpots[row - 1][col]++;
+                }
+                if (row - 1 >= 0){
+                    mineSpots[row - 1][col + 1]++;
+                }
+                if (col - 1 >= 0){
+                    mineSpots[row][col - 1]++;
+                }
+                if (!(col >= m - 1)){
+                    mineSpots[row][col + 1]++;
+                }
+                
+                if (col - 1 >= 0){
+                    mineSpots[row + 1][col - 1]++;
+                }
                 mineSpots[row + 1][col]++;
-                mineSpots[row + 1][col + 1]++;
+                if (!(col >= m)){
+                    mineSpots[row + 1][col + 1]++;
+                }
             }
         }
     }
-    
-//    for (int row = 0; row < n + 1; row++) {
-//        for (int col = 0; col < m + 1; col++) {
-//            if (values[row - 1][col] == -1) {
-//                mineSpots[row - 1][col]++;
-//            }
-//            if (values[row - 1][col - 1] != -1){
-//                mineSpots[row-1][col-1]++;
-//            }
-//            if (values[row - 1][col + 1] != -1){
-//                mineSpots[row-1][col+1]++;
-//            }
-//            if (values[row][col - 1] != -1) {
-//                mineSpots[row][col - 1]++;
-//            }
-//            if (values[row + 1][col] != -1) {
-//                mineSpots[row + 1][col]++;
-//            }
-//            if (values[row + 1][col + 1] != -1) {
-//               mineSpots[row + 1][col + 1]++;
-//            }
-//            if (values[row+1][col-1] != -1) {
-//                mineSpots[row+1][col-1]++;
-//            }
-//            if (values[row][col+1] != -1) {
-//                mineSpots[row][col+1]++;
-//            }
-//        }
-//    }
     
     //This for loop displays the array.
     for (int r = 0; r < n; r++){
@@ -244,13 +231,122 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
 }// End of showArray Function
 
 
+//SEND UP
 
 
+//int points[n][m];
+//for (int r = 0; r < n; r++){
+//    for (int c = 0; c < m; c++){
+//        points[r][c] = 0;
+//    }
+//}
 
 
+//for (int row = 0; row < n; row++) {
+//    for (int col = 0; col < m; col++) {
+//        if (values[row][col] == '*') {
+//            points[row - 1][col - 1]++;
+//            points[row - 1][col]++;
+//            points[row - 1][col]++;
+//            points[row - 1][col + 1]++;
+//            points[row][col - 1]++;
+//            points[row][col + 1]++;
+//            points[row + 1][col - 1]++;
+//            points[row + 1][col]++;
+//            points[row + 1][col + 1]++;
+//        }
+//    }
+//}
 
 
+//*101
+//2310
+//1*10
+//1110
+
+//WORKING
 
 
+//for (int row = 0; row < n; row++) {
+//    for (int col = 0; col < m; col++) {
+//        if (values[row][col] == '*') {
+//            mineSpots[row - 1][col - 1]++;
+//            mineSpots[row - 1][col]++;
+//            mineSpots[row - 1][col + 1]++;
+//            if (col - 1 >= 0){
+//                mineSpots[row][col - 1]++;
+//            }
+//            //mineSpots[row][col - 1]++;
+//            mineSpots[row][col + 1]++;
+//            if (col - 1 >= 0){
+//                mineSpots[row + 1][col - 1]++;
+//            }
+//            //mineSpots[row + 1][col - 1]++;
+//            mineSpots[row + 1][col]++;
+//            mineSpots[row + 1][col + 1]++;
+//            
+//        }
+//    }
+//}
 
+//for (int row = 0; row < n; row++) {
+//    for (int col = 0; col < m; col++) {
+//        if (values[row][col] == '*') {
+//            if ((row - 1 >= 0) && (col - 1 >= 0) ){
+//                mineSpots[row - 1][col - 1]++;
+//            }
+//            if (row - 1 >= 0){
+//                mineSpots[row - 1][col]++;
+//            }
+//            if ((row - 1 >= 0) && (col < m - 1 )){
+//                mineSpots[row - 1][col + 1]++;
+//            }
+//            if (col - 1 >= 0){
+//                mineSpots[row][col - 1]++;
+//            }
+//            mineSpots[row][col + 1]++;
+//            if (col - 1 >= 0){
+//                mineSpots[row + 1][col - 1]++;
+//            }
+//            mineSpots[row + 1][col]++;
+//            mineSpots[row + 1][col + 1]++;
+//
+//        }
+//    }
+//}
 
+//Test Version
+//for (int row = 0; row < n; row++) {
+//    for (int col = 0; col < m; col++) {
+//        if (values[row][col] == '*') {
+//            //Took off equal signs
+//            if ((row - 1 >= 0) && (col - 1 >= 0) ){
+//                mineSpots[row - 1][col - 1]++;
+//            }
+//            //took off - 1
+//            if (row >= 0){
+//                mineSpots[row - 1][col]++;
+//            }
+//            if ((row >= 0) && (col < m - 1 )){
+//                mineSpots[row - 1][col + 1]++;
+//            }
+//            if (col >= 0){
+//                mineSpots[row][col - 1]++;
+//            }
+//            if (col < m - 1){
+//                mineSpots[row][col + 1]++;
+//            }
+//            if (col >= 0){
+//                mineSpots[row + 1][col - 1]++;
+//            }
+//            if (row < n - 1){
+//                mineSpots[row + 1][col]++;
+//            }
+//            if ((row < n - 1) && (col < m -1)){
+//                mineSpots[row + 1][col + 1]++;
+//            }
+//            
+//            
+//        }
+//    }
+//}
