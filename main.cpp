@@ -17,18 +17,16 @@
 
 using namespace std;
 
-//*******************************
-//Prototype Functions
-//*******************************
-
 //Global Constants
 const int ROWS = 100;
 const int COLS = 100;
 
+//*******************************
+//Prototype Functions
+//*******************************
+
 void buildArray(ifstream &, char [][COLS], int, int, int);
 void showArray(ifstream &, ofstream &, char [][COLS], int, int, int);
-
-
 
 //******************************
 //Main Function
@@ -40,18 +38,14 @@ int main(){
     ifstream inputFile;
     ofstream outputFile;
 
-    //char row;
     char mines[ROWS][COLS];
-    //loop counters
-    //int r, c;
     //Variables to keep track of the number of rows and columns.
     int n, m;
     //variable to keep track of the number of fields
     int count = 1;
     
     //Opening the file
-    inputFile.open("test.txt");
-    //inputdata
+    inputFile.open("inputdata.txt");
     
     //Opening/creating the file to which store the information in this program.
     outputFile.open("outputdata.txt");
@@ -76,7 +70,11 @@ int main(){
         //the loop will break as well.
         if (n == 0 && m == 0){
             break;
-        }else if (n <= 0 || m > 100){
+        }else if (n <= 0){
+            outputFile << "Sorry, the number of rows you have is less than 0!" << endl;
+            break;
+        }else if (m > 100){
+            outputFile << "Sorry, the number of columns you have is greater than 100!" << endl;
             break;
         }
         
@@ -93,7 +91,7 @@ int main(){
         cout << endl;
         outputFile << endl;
         
-        //The count is incremented each pass to keep track of the field.
+        //The count is incremented each pass to keep track of the field number.
         count++;
    }
 
@@ -126,7 +124,7 @@ void buildArray(ifstream &file, char values[][COLS], int rows, int n, int m){
     }
 } // End of buildArray Function
 
-
+//This function will find all the mines and then output what it finds to the outputdata.txt file.
 void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows, int n, int m){
     
     //Creating an array to hold the numbers for the mines. Each position
@@ -138,6 +136,8 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
         }
     }
     
+    //This for loop is what will actually find the locations of the mines. It uses a counter to go through every position around
+    //a spot that has an '*' and counts to determine the correct number of mines around that location.
     for (int row = 0; row < n; row++) {
         for (int col = 0; col < m; col++) {
             if (values[row][col] == '*') {
@@ -147,7 +147,7 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
                 if (row - 1 >= 0){
                     mineSpots[row - 1][col]++;
                 }
-                if (row - 1 >= 0){
+                if ( (col < m - 1) && (row > 0)){
                     mineSpots[row - 1][col + 1]++;
                 }
                 if (col - 1 >= 0){
@@ -160,10 +160,10 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
                 if (col - 1 >= 0){
                     mineSpots[row + 1][col - 1]++;
                 }
-                mineSpots[row + 1][col]++;
-                if (!(col >= m)){
+                if ((row < n - 1) && (col < m - 1)){
                     mineSpots[row + 1][col + 1]++;
                 }
+                mineSpots[row + 1][col]++;
             }
         }
     }
@@ -173,180 +173,11 @@ void showArray(ifstream &file, ofstream &outFile, char values[][COLS], int rows,
         for (int c = 0; c < m; c++){
             if (values[r][c] == '*'){
                 outFile << '*';
-                cout << '*';
             }else{
                 outFile << mineSpots[r][c];
-                cout << mineSpots[r][c];
                 }
             }
             cout << endl;
             outFile << endl;
     }
-
-
-
-    
-    //This for loop displays the array in the outputdata file. It will also place the correct number of mines
-    //at each location that is near a mine.
-//    for (int r = 0; r < n; r++){
-//        for (int c = 0; c < m; c++){
-//            if (values[r][c] == '*'){
-//                outFile << '*';
-//                cout << '*';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c - 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c] == '*')){
-//                outFile<< '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r - 1][c + 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c - 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r][c + 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c - 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 1][c + 1] == '*')){
-//                outFile << '1';
-//                cout << '1';
-//            }else if (((values[r][c] == '.') || (values[r][c] == '0')) && (values[r + 2][c] == '*') && (values[r - 1][c - 1] == '*')){
-//                outFile << '2';
-//                cout << '2';
-//            }else if(values[r][c] == '.'){
-//                outFile << '0';
-//                cout << '0';
-//            }
-//        }
-//        cout << endl;
-//        outFile << endl;
-//    }
 }// End of showArray Function
-
-
-//SEND UP
-
-
-//int points[n][m];
-//for (int r = 0; r < n; r++){
-//    for (int c = 0; c < m; c++){
-//        points[r][c] = 0;
-//    }
-//}
-
-
-//for (int row = 0; row < n; row++) {
-//    for (int col = 0; col < m; col++) {
-//        if (values[row][col] == '*') {
-//            points[row - 1][col - 1]++;
-//            points[row - 1][col]++;
-//            points[row - 1][col]++;
-//            points[row - 1][col + 1]++;
-//            points[row][col - 1]++;
-//            points[row][col + 1]++;
-//            points[row + 1][col - 1]++;
-//            points[row + 1][col]++;
-//            points[row + 1][col + 1]++;
-//        }
-//    }
-//}
-
-
-//*101
-//2310
-//1*10
-//1110
-
-//WORKING
-
-
-//for (int row = 0; row < n; row++) {
-//    for (int col = 0; col < m; col++) {
-//        if (values[row][col] == '*') {
-//            mineSpots[row - 1][col - 1]++;
-//            mineSpots[row - 1][col]++;
-//            mineSpots[row - 1][col + 1]++;
-//            if (col - 1 >= 0){
-//                mineSpots[row][col - 1]++;
-//            }
-//            //mineSpots[row][col - 1]++;
-//            mineSpots[row][col + 1]++;
-//            if (col - 1 >= 0){
-//                mineSpots[row + 1][col - 1]++;
-//            }
-//            //mineSpots[row + 1][col - 1]++;
-//            mineSpots[row + 1][col]++;
-//            mineSpots[row + 1][col + 1]++;
-//            
-//        }
-//    }
-//}
-
-//for (int row = 0; row < n; row++) {
-//    for (int col = 0; col < m; col++) {
-//        if (values[row][col] == '*') {
-//            if ((row - 1 >= 0) && (col - 1 >= 0) ){
-//                mineSpots[row - 1][col - 1]++;
-//            }
-//            if (row - 1 >= 0){
-//                mineSpots[row - 1][col]++;
-//            }
-//            if ((row - 1 >= 0) && (col < m - 1 )){
-//                mineSpots[row - 1][col + 1]++;
-//            }
-//            if (col - 1 >= 0){
-//                mineSpots[row][col - 1]++;
-//            }
-//            mineSpots[row][col + 1]++;
-//            if (col - 1 >= 0){
-//                mineSpots[row + 1][col - 1]++;
-//            }
-//            mineSpots[row + 1][col]++;
-//            mineSpots[row + 1][col + 1]++;
-//
-//        }
-//    }
-//}
-
-//Test Version
-//for (int row = 0; row < n; row++) {
-//    for (int col = 0; col < m; col++) {
-//        if (values[row][col] == '*') {
-//            //Took off equal signs
-//            if ((row - 1 >= 0) && (col - 1 >= 0) ){
-//                mineSpots[row - 1][col - 1]++;
-//            }
-//            //took off - 1
-//            if (row >= 0){
-//                mineSpots[row - 1][col]++;
-//            }
-//            if ((row >= 0) && (col < m - 1 )){
-//                mineSpots[row - 1][col + 1]++;
-//            }
-//            if (col >= 0){
-//                mineSpots[row][col - 1]++;
-//            }
-//            if (col < m - 1){
-//                mineSpots[row][col + 1]++;
-//            }
-//            if (col >= 0){
-//                mineSpots[row + 1][col - 1]++;
-//            }
-//            if (row < n - 1){
-//                mineSpots[row + 1][col]++;
-//            }
-//            if ((row < n - 1) && (col < m -1)){
-//                mineSpots[row + 1][col + 1]++;
-//            }
-//            
-//            
-//        }
-//    }
-//}
